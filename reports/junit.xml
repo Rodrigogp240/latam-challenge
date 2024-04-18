@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="1" failures="0" skipped="0" tests="1" time="1.137" timestamp="2024-04-17T20:16:03.641496" hostname="Rodrigo-garcia"><testcase classname="" name="tests.model.test_model" time="0.000"><error message="collection failure">tests/model/test_model.py:6: in &lt;module&gt;
+    from challenge.model import DelayModel
+challenge/model.py:7: in &lt;module&gt;
+    class DelayModel:
+challenge/model.py:18: in DelayModel
+    ) -&gt; Union(Tuple[pd.DataFrame, pd.DataFrame], pd.DataFrame): # type: ignore
+../../miniconda3/lib/python3.10/typing.py:387: in __call__
+    raise TypeError(f"Cannot instantiate {self!r}")
+E   TypeError: Cannot instantiate typing.Union</error></testcase></testsuite></testsuites>

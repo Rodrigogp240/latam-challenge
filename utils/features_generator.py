@@ -1,7 +1,22 @@
+import pandas as pd
 from datetime import datetime
 
 
 class FeatrueGenerator():
+
+    top_10_features = [
+        "OPERA_Latin American Wings",
+        "MES_7",
+        "MES_10",
+        "OPERA_Grupo LATAM",
+        "MES_12",
+        "TIPOVUELO_I",
+        "MES_4",
+        "MES_11",
+        "OPERA_Sky Airline",
+        "OPERA_Copa Air"
+    ]
+        
     @staticmethod
     def get_period_day(date):
         date_time = datetime.strptime(date, '%Y-%m-%d %H:%M:%S').time()
@@ -59,3 +74,13 @@ class FeatrueGenerator():
         fecha_i = datetime.strptime(data['Fecha-I'], '%Y-%m-%d %H:%M:%S')
         min_diff = ((fecha_o - fecha_i).total_seconds())/60
         return min_diff
+
+    @staticmethod
+    def get_important_fetures(data):
+            
+        features = pd.concat([
+            pd.get_dummies(data['OPERA'], prefix='OPERA'),
+            pd.get_dummies(data['TIPOVUELO'], prefix='TIPOVUELO'),
+            pd.get_dummies(data['MES'], prefix='MES')],
+            axis=1
+        )
