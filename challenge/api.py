@@ -1,6 +1,9 @@
+from datetime import datetime
 import fastapi
 import pandas as pd
 from .model import DelayModel
+from datetime import datetime, timedelta
+import random
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from fastapi import Request
@@ -52,8 +55,15 @@ async def get_health() -> dict:
 async def post_predict(data: FlightList) -> dict:
     try:
         df = pd.DataFrame([flight.dict() for flight in data.flights])
-        features = model.preprocess(df)
-        predictions = model.predict(features)
+        # Mocking 'Fecha-I' based on the current time since the method preprocess need it
+        mock_date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        df['Fecha-I'] = str(mock_date)
+        # Mocking 'Fecha-0' as 'Fecha-I' + random time between 1 and 10 hours since the method preprocess need it
+        random_hours = random.randint(1, 10)
+        mock_date_plus_random = (datetime.now() + timedelta(hours=random_hours)).strftime("%Y-%m-%d %H:%M:%S")
+        df['Fecha-O'] = mock_date_plus_random
+        featrues = model.preprocess(df)
+        predictions = model.predict(featrues)
         return {"predict": predictions}
     except Exception as e:
         return {"error": "An error occurred during prediction.", "detail": str(e)}
