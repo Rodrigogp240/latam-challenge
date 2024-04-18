@@ -33,8 +33,12 @@ class DelayModel:
         data['min_diff'] = data.apply(FeatrueGenerator.get_min_diff, axis = 1)
         threshold_in_minutes = 15
         data['delay'] = np.where(data['min_diff'] > threshold_in_minutes, 1, 0)
-
-        return data
+        features = FeatrueGenerator.get_important_fetures(data)
+        
+        if target_column:
+            return features, data[target_column].to_frame()
+        else:
+            return features
 
     def fit(
         self,
