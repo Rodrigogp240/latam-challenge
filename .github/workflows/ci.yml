@@ -14,10 +14,12 @@ jobs:
 
       - name: Set up Python 3.10
         uses: actions/setup-python@v3
+        with:
+          python-version: "3.10"
 
       - name: Set up virtual environment
         run: |
-          python -m venv .venv
+          make venv
           source .venv/bin/activate
 
       - name: Cache dependencies
@@ -34,12 +36,6 @@ jobs:
         run: |
           pip install --upgrade pip
           pip install flake8 pytest
-
-          # Install dependencies from requirements-dev.txt
-          if [ -f requirements-dev.txt ]; then
-            echo "Installing dependencies from requirements-dev.txt"
-            pip install -r requirements-dev.txt
-          fi
 
           # Install dependencies from requirements-test.txt
           if [ -f requirements-test.txt ]; then
