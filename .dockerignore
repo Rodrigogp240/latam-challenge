@@ -1,7 +1,19 @@
-Dockerfile
-README.md
-*.pyc
-*.pyo
-*.pyd
+# Exclude version control files
+.git
+.github
+.gitignore
+
+# Exclude Python cache and bytecode files
 __pycache__
-.pytest_cache
+*.pyc
+
+# Exclude local development files
+.venv
+*.log
+
+# Exclude Docker related files
+.dockerignore
+Dockerfile
+
+# Exclude any other files or directories not needed in the Docker image
+README.md
