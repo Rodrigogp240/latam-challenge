@@ -2,7 +2,6 @@ from datetime import datetime
 
 
 class FeatrueGenerator():
-
     @staticmethod
     def get_period_day(date):
         date_time = datetime.strptime(date, '%Y-%m-%d %H:%M:%S').time()
