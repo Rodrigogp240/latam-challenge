@@ -28,10 +28,10 @@ class DelayModel:
             or
             pd.DataFrame: features.
         """
+        threshold_in_minutes = 15
         data['period_day'] = data['Fecha-I'].apply(FeatrueGenerator.get_period_day)
         data['high_season'] = data['Fecha-I'].apply(FeatrueGenerator.is_high_season)
         data['min_diff'] = data.apply(FeatrueGenerator.get_min_diff, axis = 1)
-        threshold_in_minutes = 15
         data['delay'] = np.where(data['min_diff'] > threshold_in_minutes, 1, 0)
         features = FeatrueGenerator.get_important_fetures(data)
         
