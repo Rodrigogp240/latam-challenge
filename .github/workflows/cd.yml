@@ -45,8 +45,10 @@
 name: Continuous Delivery
 
 on:
-  push:
-    branches: [ "main" ]
+    workflow_run:
+        workflows: ["Continuous Integration"]
+        types:
+          - completed
 
 env:
   PROJECT_ID: delay-api-latam # TODO: update Google Cloud project id
@@ -73,7 +75,7 @@ jobs:
 
       - name: Deploy to Cloud Run
         id: deploy
-        uses: google-github-actions/deploy-cloudrun@v0
+        uses: google-github-actions/deploy-cloudrun@v2
         with:
           service: ${{ env.SERVICE }}
           region: ${{ env.REGION }}
