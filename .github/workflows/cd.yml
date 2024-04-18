@@ -34,6 +34,13 @@ jobs:
         with:
           project_id: "${{ env.PROJECT_ID }}"
 
+      - name: Print Environment Variables
+        run: |
+          echo "GAR_LOCATION: $GAR_LOCATION"
+          echo "PROJECT_ID: $PROJECT_ID"
+          echo "APP: $APP"
+          echo "GitHub SHA: ${{ github.sha }}"
+
       - name: Docker auth
         run: |
           gcloud auth configure-docker ${{ env.GAR_LOCATION }}-docker.pkg.dev
