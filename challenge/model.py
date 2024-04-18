@@ -1,6 +1,8 @@
 import pandas as pd
+import numpy as np
 
 from typing import Tuple, Union, List
+from utils.features_generator import FeatrueGenerator
 
 class DelayModel:
 
@@ -13,7 +15,7 @@ class DelayModel:
         self,
         data: pd.DataFrame,
         target_column: str = None
-    ) -> Union(Tuple[pd.DataFrame, pd.DataFrame], pd.DataFrame): # type: ignore
+    ) -> Union[Tuple[pd.DataFrame, pd.DataFrame], pd.DataFrame]:
         """
         Prepare raw data for training or predict.
 
@@ -26,7 +28,13 @@ class DelayModel:
             or
             pd.DataFrame: features.
         """
-        return
+        data['period_day'] = data['Fecha-I'].apply(FeatrueGenerator.get_period_day)
+        data['high_season'] = data['Fecha-I'].apply(FeatrueGenerator.is_high_season)
+        data['min_diff'] = data.apply(FeatrueGenerator.get_min_diff, axis = 1)
+        threshold_in_minutes = 15
+        data['delay'] = np.where(data['min_diff'] > threshold_in_minutes, 1, 0)
+
+        return data
 
     def fit(
         self,
