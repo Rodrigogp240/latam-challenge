@@ -77,11 +77,16 @@ class FeatrueGenerator():
             "OPERA_Sky Airline",
             "OPERA_Copa Air"
         ]
-        features = pd.concat([
-            pd.get_dummies(data['OPERA'], prefix='OPERA'),
-            pd.get_dummies(data['TIPOVUELO'], prefix='TIPOVUELO'),
-            pd.get_dummies(data['MES'], prefix='MES')],
-            axis=1
-        )
-        features = features[top_10_features]
+
+        # Create dummy variables for categorical columns
+        opera_dummies = pd.get_dummies(data['OPERA'], prefix='OPERA')
+        tipo_vuelo_dummies = pd.get_dummies(data['TIPOVUELO'], prefix='TIPOVUELO')
+        mes_dummies = pd.get_dummies(data['MES'], prefix='MES')
+        
+        # Combine dummy variables
+        features = pd.concat([opera_dummies, tipo_vuelo_dummies, mes_dummies], axis=1)
+        
+        # Ensure all expected columns are present and in the correct order
+        features = features.reindex(columns=top_10_features, fill_value=0)
+        
         return features
