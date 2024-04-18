@@ -51,9 +51,9 @@ on:
     branches: [ "main" ]
 
 env:
-  PROJECT_ID: YOUR_PROJECT_ID # TODO: update Google Cloud project id
-  SERVICE: YOUR_SERVICE_NAME # TODO: update Cloud Run service name
-  REGION: YOUR_SERVICE_REGION # TODO: update Cloud Run service region
+  PROJECT_ID: delay-api-latam # TODO: update Google Cloud project id
+  SERVICE: delay-api # TODO: update Cloud Run service name
+  REGION: southamerica-west # TODO: update Cloud Run service region
 
 jobs:
   deploy:
@@ -85,3 +85,5 @@ jobs:
       # If required, use the Cloud Run url output in later steps
       - name: Show Output
         run: echo ${{ steps.deploy.outputs.url }}
+        
+        
