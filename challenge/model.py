@@ -1,3 +1,4 @@
+import os
 import pandas as pd
 import numpy as np
 import xgboost as xgb
@@ -34,7 +35,7 @@ class DelayModel:
             or
             pd.DataFrame: features.
         """
-        threshold_in_minutes = 15
+        threshold_in_minutes:int = 15
         data['period_day'] = data['Fecha-I'].apply(
             FeatrueGenerator.get_period_day)
         data['high_season'] = data['Fecha-I'].apply(
@@ -83,6 +84,15 @@ class DelayModel:
             (List[int]): predicted targets.
         """
         logging.info('is predicting')
-        self._model.load_model('Delay_model.json')
-        prediction: np.array = self._model.predict(features)
-        return prediction.tolist()
+        if os.path.exists(MODEL_PATH):
+            self._model.load_model(MODEL_PATH)
+        else:
+            logging.error("Model file does not exist.")
+            return []
+
+        try:
+            prediction: np.array = self._model.predict(features)
+            return prediction.tolist()
+        except Exception as e:
+            logging.error(f"An error occurred during prediction: {e}")
+            return []
