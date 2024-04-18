@@ -1,11 +1,12 @@
 import pandas as pd
 from datetime import datetime
+from typing import Tuple, Union, List
 
 
 class FeatrueGenerator():
 
     @staticmethod
-    def get_period_day(date):
+    def get_period_day(date: str) -> str:
         date_time = datetime.strptime(date, '%Y-%m-%d %H:%M:%S').time()
         morning_min = datetime.strptime("05:00", '%H:%M').time()
         morning_max = datetime.strptime("11:59", '%H:%M').time()
@@ -27,7 +28,7 @@ class FeatrueGenerator():
             return 'noche'
 
     @staticmethod
-    def is_high_season(fecha):
+    def is_high_season(fecha: str) -> int:
         fecha_año = int(fecha.split('-')[0])
         fecha = datetime.strptime(fecha, '%Y-%m-%d %H:%M:%S')
         range1_min = datetime.strptime(
@@ -56,14 +57,14 @@ class FeatrueGenerator():
             return 0
 
     @staticmethod
-    def get_min_diff(data):
+    def get_min_diff(data: pd.DataFrame) -> float:
         fecha_o = datetime.strptime(data['Fecha-O'], '%Y-%m-%d %H:%M:%S')
         fecha_i = datetime.strptime(data['Fecha-I'], '%Y-%m-%d %H:%M:%S')
         min_diff = ((fecha_o - fecha_i).total_seconds())/60
         return min_diff
 
     @staticmethod
-    def get_important_fetures(data):
+    def get_important_fetures(data: pd.DataFrame) -> pd.DataFrame:
         top_10_features = [
             "OPERA_Latin American Wings",
             "MES_7",
