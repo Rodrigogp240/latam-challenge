@@ -15,8 +15,7 @@ jobs:
 
     - name: Set up Python
       uses: actions/setup-python@v2
-      with:
-        python-version: 'water'
+
 
     - name: Cache pip dependencies
       uses: actions/cache@v2
