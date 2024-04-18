@@ -1,15 +1,21 @@
 import pandas as pd
 import numpy as np
+import xgboost as xgb
+import logging
 
 from typing import Tuple, Union, List
+
 from utils.features_generator import FeatrueGenerator
+
+MODEL_PATH :str = 'Delay_model.json'
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 class DelayModel:
 
     def __init__(
         self
     ):
-        self._model = None # Model should be saved in this attribute.
+        self._model = xgb.XGBClassifier(random_state=1, learning_rate=0.01, scale_pos_weight=4.4402380952380955)
 
     def preprocess(
         self,
@@ -29,12 +35,14 @@ class DelayModel:
             pd.DataFrame: features.
         """
         threshold_in_minutes = 15
-        data['period_day'] = data['Fecha-I'].apply(FeatrueGenerator.get_period_day)
-        data['high_season'] = data['Fecha-I'].apply(FeatrueGenerator.is_high_season)
-        data['min_diff'] = data.apply(FeatrueGenerator.get_min_diff, axis = 1)
+        data['period_day'] = data['Fecha-I'].apply(
+            FeatrueGenerator.get_period_day)
+        data['high_season'] = data['Fecha-I'].apply(
+            FeatrueGenerator.is_high_season)
+        data['min_diff'] = data.apply(FeatrueGenerator.get_min_diff, axis=1)
         data['delay'] = np.where(data['min_diff'] > threshold_in_minutes, 1, 0)
         features = FeatrueGenerator.get_important_fetures(data)
-        
+
         if target_column:
             return features, data[target_column].to_frame()
         else:
@@ -52,7 +60,14 @@ class DelayModel:
             features (pd.DataFrame): preprocessed data.
             target (pd.DataFrame): target.
         """
-        return
+        logging.info('Model is been fit')        
+        self._model.fit(features, target.values.ravel())  
+        try:
+            self._model.save_model(MODEL_PATH)
+            logging.info("Model saved successfully.")
+        except Exception as e:
+            logging.error(f"Error saving the model: {e}")
+        return None
 
     def predict(
         self,
@@ -63,8 +78,11 @@ class DelayModel:
 
         Args:
             features (pd.DataFrame): preprocessed data.
-        
+
         Returns:
             (List[int]): predicted targets.
         """
-        return
+        logging.info('is predicting')
+        self._model.load_model('Delay_model.json')
+        prediction: np.array = self._model.predict(features)
+        return prediction.tolist()

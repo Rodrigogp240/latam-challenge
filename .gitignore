@@ -1,1 +1,6 @@
 .venv/
+__pycache__/
+.pytest_cache/
+reports/
+.coverage
+Delay_model.json
