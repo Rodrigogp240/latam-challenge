@@ -74,7 +74,7 @@ jobs:
 
       - name: Build and Push Container
         run: |-
-          docker build -t "southamerica-west1-docker.pkg.dev/delay-api-latam/:696bd0e4554a02d85a68a06d6b433ab7828d1211" .
+          docker build -t "southamerica-west1-docker.pkg.dev/delay-api-latam:696bd0e4554a02d85a68a06d6b433ab7828d1211" .
           docker push "${{ env.GAR_LOCATION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:${{ github.sha }}"
 
       # END - Docker auth and build
