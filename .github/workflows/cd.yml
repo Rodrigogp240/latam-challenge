@@ -1,10 +1,10 @@
-name: Deploy to Cloud Run
+name: Continuous Delivery
 
 on:
-  push:
-    branches:
-      - main
-
+    workflow_run:
+      workflows: ["Continuous Integration"]
+      types:
+        - completed
 env:
   PROJECT_ID: delay-api-latam # TODO: update Google Cloud project id
   GAR_LOCATION: southamerica-west1 # TODO: update Artifact Registry location
