@@ -49,9 +49,10 @@ jobs:
         run: |
           docker build -t "${{ env.GAR_LOCATION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.APP }}:${{ github.sha }}" -f Dockerfile .
 
-      - name: push container
+      - name: Push container
         run: |
-            docker push "${{ env.GAR_LOCATION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.APP }}:${{ github.sha }}"
+            docker push "southamerica-west1-docker.pkg.dev/${{ env.PROJECT_ID }}/delay-api/${{ env.APP }}:${{ github.sha }}"
+        
 
       - name: Deploy to Cloud Run
         run: |
