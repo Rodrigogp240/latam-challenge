@@ -17,3 +17,11 @@ Dockerfile
 
 # Exclude any other files or directories not needed in the Docker image
 README.md
+data/
+docs/
+reports/
+test/
+challenge/exploration.ipynb
+Makefile
+requirements-test.txt
+requirements-dev.txt
