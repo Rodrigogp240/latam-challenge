@@ -86,12 +86,14 @@ class DelayModel:
         logging.info('is predicting')
         if os.path.exists(MODEL_PATH):
             self._model.load_model(MODEL_PATH)
+            logging.error("Model file loaded.")
         else:
             logging.error("Model file does not exist.")
             return []
 
         try:
             prediction: np.array = self._model.predict(features)
+            logging.info('prediction successful')
             return prediction.tolist()
         except Exception as e:
             logging.error(f"An error occurred during prediction: {e}")
