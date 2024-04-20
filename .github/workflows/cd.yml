@@ -8,7 +8,7 @@ on:
 env:
   PROJECT_ID: delay-api-latam # TODO: update Google Cloud project id
   GAR_LOCATION: southamerica-west1 # TODO: update Artifact Registry location
-  REGION: southamerica-west1 # TODO: update Cloud Run service regio
+  REGION: southamerica-west1 # TODO: update Cloud Run service region
   APP: delay-api
 
 jobs:
