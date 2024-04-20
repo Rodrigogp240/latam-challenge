@@ -9,7 +9,7 @@ env:
   PROJECT_ID: delay-api-latam # TODO: update Google Cloud project id
   GAR_LOCATION: southamerica-west1 # TODO: update Artifact Registry location
   REGION: southamerica-west1 # TODO: update Cloud Run service region
-  APP: delay-api
+  APP: delay
 
 jobs:
   deploy:
@@ -34,30 +34,23 @@ jobs:
         with:
           project_id: "${{ env.PROJECT_ID }}"
 
-      - name: Print Environment Variables
-        run: |
-          echo "GAR_LOCATION: $GAR_LOCATION"
-          echo "PROJECT_ID: $PROJECT_ID"
-          echo "APP: $APP"
-          echo "GitHub SHA: ${{ github.sha }}"
-
       - name: Docker auth
         run: |
           gcloud auth configure-docker ${{ env.GAR_LOCATION }}-docker.pkg.dev
 
       - name: Build container
         run: |
-          docker build -t "${{ env.GAR_LOCATION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.APP }}:${{ github.sha }}" -f Dockerfile .
+          docker build -t "southamerica-west1-docker.pkg.dev/delay-api-latam/delay-api/${{ env.APP }}" -f Dockerfile .
           docker images
 
       - name: push container
         run: |
-            docker push "${{ env.GAR_LOCATION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.APP }}:${{ github.sha }}"
+            docker push "southamerica-west1-docker.pkg.dev/delay-api-latam/delay-api/${{ env.APP }}"
 
       - name: Deploy to Cloud Run
         run: |
           gcloud run deploy ${{ env.APP }} \
-            --image="${{ env.GAR_LOCATION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.APP }}:${{ github.sha }}" \
+            --image="southamerica-west1-docker.pkg.dev/delay-api-latam/delay-api/${{ env.APP }}" \
             --platform=managed \
             --region=${{ env.REGION }} \
             --allow-unauthenticated
